@@ -19,8 +19,6 @@ from sklearn.decomposition import PCA
 
 app = Flask(__name__)
 
-# URL Firebase
-FIREBASE_URL = 'https://svm-health-default-rtdb.firebaseio.com'
 
 # Global variables
 model = None
@@ -34,7 +32,7 @@ plot_lock = Lock()
 def load_questions():
     global questions
     # Ambil data pertanyaan
-    response = requests.get(f'{FIREBASE_URL}/questions.json')
+    response = requests.get(f'questions.json')
     questions = response.json()
     return questions
 
@@ -43,7 +41,7 @@ def load_training_data():
     try:
         print("\n=== LOADING TRAINING DATA ===")
         
-        response = requests.get(f'{FIREBASE_URL}/data_model.json')
+        response = requests.get(f'data_model.json')
         data_model = response.json()
         
         if not data_model or 'columns' not in data_model or 'data' not in data_model:
@@ -155,7 +153,7 @@ initialize_app()
 @app.route('/')
 def index():
     # Ambil data model dari Firebase
-    response = requests.get(f'{FIREBASE_URL}/data_model.json')
+    response = requests.get(f'data_model.json')
     data_model = response.json()
     
     if not data_model or 'columns' not in data_model:
